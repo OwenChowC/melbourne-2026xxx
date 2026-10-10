@@ -10,8 +10,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="墨爾本之旅">
     <!-- 請將你的 Logo 圖片命名為 logo.png 並放在同一資料夾下 -->
-    <link rel="apple-touch-icon" href="logo.jpg">
-    <link rel="icon" type="image/png" href="logo.jpg">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="icon" type="image/png" href="logo.png">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -73,6 +73,7 @@
                         <i :class="weather.icon" class="text-4xl text-aus-accent"></i>
                     </div>
 
+                    <!-- 日期已修正: 18/10 是星期日 (Sun) -->
                     <div class="flex overflow-x-auto space-x-3 no-scrollbar pb-2 mb-4">
                         <div v-for="day in days" :key="day.id" @click="currentDay = day.id"
                              :class="['flex-shrink-0 w-16 h-20 rounded-2xl flex flex-col items-center justify-center cursor-pointer transition shadow-sm', 
@@ -102,10 +103,9 @@
                                         <h3 class="text-lg font-bold text-gray-800 mt-2">{{ item.name }}</h3>
                                     </div>
                                     
-                                    <!-- 新增拖曳把手與編輯按鈕 (直向排列) -->
+                                    <!-- 拖曳把手與編輯按鈕 -->
                                     <div class="flex flex-col items-center gap-3 mt-1">
                                         <button @click="editItem(item)" class="text-gray-300 hover:text-aus-green"><i class="fa-solid fa-pen"></i></button>
-                                        <!-- 只有按住這個三條線的 Icon 才能進行拖曳 -->
                                         <div class="drag-handle text-gray-200 hover:text-gray-400 cursor-move text-lg touch-none p-1"><i class="fa-solid fa-grip-lines"></i></div>
                                     </div>
                                 </div>
@@ -120,11 +120,10 @@
                 </div>
             </transition>
 
-            <!-- Tab 2: 導覽 (完整收錄行程所有景點 + 高清穩定圖源) -->
+            <!-- Tab 2: 導覽 -->
             <transition name="fade" mode="out-in">
                 <div v-if="currentTab === 'guide'" class="space-y-6 pb-24">
                     <h2 class="text-2xl font-bold text-aus-dark mb-4">行程景點全導覽</h2>
-                    
                     <div class="space-y-6">
                         <article v-for="spot in guideSpots" :key="spot.title" class="bg-white rounded-2xl overflow-hidden shadow-sm">
                             <img :src="spot.img" class="w-full h-48 object-cover" :alt="spot.title">
@@ -192,7 +191,7 @@
                 </div>
             </transition>
 
-            <!-- Tab 5: 資訊 (即時自動連線抓最新匯率) -->
+            <!-- Tab 5: 資訊 -->
             <transition name="fade" mode="out-in">
                 <div v-if="currentTab === 'info'" class="space-y-6 pb-24">
                     
@@ -225,6 +224,7 @@
                         <p class="text-xs text-gray-400 mt-2 text-right">當前匯率: 1 AUD ≈ {{ exchangeRate }} HKD</p>
                     </div>
 
+                    <!-- 必備清單 (已加入國際車牌) -->
                     <div class="bg-white rounded-2xl p-5 shadow-sm">
                         <h3 class="font-bold text-aus-dark mb-3"><i class="fa-solid fa-list-check mr-2"></i>必備清單</h3>
                         <div class="grid grid-cols-2 gap-2">
@@ -246,20 +246,31 @@
                         </div>
                         <div class="bg-white rounded-2xl p-5 shadow-sm border-l-4 border-aus-green">
                             <h3 class="font-bold text-aus-dark mb-2"><i class="fa-solid fa-bed mr-2 text-aus-green"></i>住宿資訊</h3>
-                            <p class="text-sm font-bold text-gray-800">Melbourne Private Apartments - Collins Wharf</p>
+                            <p class="text-sm font-bold text-gray-800">Melbourne Private Apartments</p>
                             <p class="text-xs text-gray-500 mt-1 mb-2">915 Collins Street, Docklands, 3008 Melbourne</p>
                             <a href="https://maps.google.com/?q=915+Collins+Street,+Docklands,+Melbourne" target="_blank" class="text-xs text-blue-500 underline"><i class="fa-solid fa-location-arrow mr-1"></i>導航</a>
                         </div>
+                        
+                        <!-- 新增：租車資訊 -->
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border-l-4 border-purple-500">
+                            <h3 class="font-bold text-aus-dark mb-2"><i class="fa-solid fa-car mr-2 text-purple-500"></i>租車資訊 (Europcar)</h3>
+                            <p class="text-sm font-bold text-gray-800">車型: Mazda CX-5</p>
+                            <p class="text-xs text-gray-500 mt-2">取車: 20 Oct 2026 09:00</p>
+                            <p class="text-xs text-gray-500">還車: 25 Oct 2026 17:00</p>
+                            <p class="text-xs text-gray-500 mt-2 mb-2"><i class="fa-solid fa-location-dot mr-1"></i>89 FRANKLIN STREET</p>
+                            <a href="https://maps.google.com/?q=89+FRANKLIN+STREET,+Melbourne" target="_blank" class="text-xs text-blue-500 underline"><i class="fa-solid fa-location-arrow mr-1"></i>導航至租車處</a>
+                        </div>
                     </div>
 
+                    <!-- 報警號碼已更新 (澳洲 000 / 行動電話通用 112) -->
                     <div class="flex gap-4">
                         <a href="tel:000" class="flex-1 bg-red-50 text-red-600 rounded-2xl p-4 text-center shadow-sm">
                             <i class="fa-solid fa-truck-medical text-2xl mb-1"></i>
-                            <div class="font-bold text-sm">報警/急救 (000)</div>
+                            <div class="font-bold text-sm">急救/報警<br>(000 / 112)</div>
                         </a>
                         <a href="http://www.bom.gov.au/vic/forecasts/melbourne.shtml" target="_blank" class="flex-1 bg-blue-50 text-blue-600 rounded-2xl p-4 text-center shadow-sm">
                             <i class="fa-solid fa-cloud-sun text-2xl mb-1"></i>
-                            <div class="font-bold text-sm">澳洲氣象局</div>
+                            <div class="font-bold text-sm mt-3">澳洲氣象局</div>
                         </a>
                     </div>
                 </div>
@@ -360,65 +371,76 @@
                     { id: 'info', name: '資訊', icon: 'fa-solid fa-circle-info' }
                 ];
 
+                // 修正 1: 日期與星期對應 (18/10 星期日開始)
                 const days = ref([
-                    { id: 'D1', date: '18', weekday: 'Fri' }, { id: 'D2', date: '19', weekday: 'Sat' },
-                    { id: 'D3', date: '20', weekday: 'Sun' }, { id: 'D4', date: '21', weekday: 'Mon' },
-                    { id: 'D5', date: '22', weekday: 'Tue' }, { id: 'D6', date: '23', weekday: 'Wed' },
-                    { id: 'D7', date: '24', weekday: 'Thu' }, { id: 'D8', date: '25', weekday: 'Fri' }, { id: 'D9', date: '26', weekday: 'Sat' }
+                    { id: 'D1', date: '18', weekday: 'Sun' }, { id: 'D2', date: '19', weekday: 'Mon' },
+                    { id: 'D3', date: '20', weekday: 'Tue' }, { id: 'D4', date: '21', weekday: 'Wed' },
+                    { id: 'D5', date: '22', weekday: 'Thu' }, { id: 'D6', date: '23', weekday: 'Fri' },
+                    { id: 'D7', date: '24', weekday: 'Sat' }, { id: 'D8', date: '25', weekday: 'Sun' }, 
+                    { id: 'D9', date: '26', weekday: 'Mon' }
                 ]);
                 const currentDay = ref('D1');
 
+                // 修正 5: 行程全面更新為新版配置
                 const itineraryData = ref({
-                    'D1': [{ id: 1, type: 'flight', category: 'flight', time: '20:05', name: 'QF030 飛往墨爾本', notes: '香港國際機場搭乘 QF030 班機', transportType: 'walk', transportTime: 0 }],
+                    'D1': [
+                        { id: 1, type: 'flight', category: 'flight', time: '20:05', name: 'QF030 飛往墨爾本', notes: '香港國際機場出發', transportType: 'walk', transportTime: 0 }
+                    ],
                     'D2': [
                         { id: 2, category: 'acc', time: '08:20', name: '抵達墨爾本機場 ➔ 前往 Docklands 寄行李', notes: '搭乘 SkyBus 前往海濱私人公寓', transportType: 'bus', transportTime: 45 },
-                        { id: 3, category: 'attraction', time: '10:00', name: '維多利亞女王市場 (Queen Victoria Market)', notes: '搭乘免費電車前往百年傳統市場', transportType: 'train', transportTime: 15 },
-                        { id: 4, category: 'food', time: '12:15', name: '德格雷夫斯街 (Degraves Street)', notes: '墨爾本最具代表性的咖啡巷弄', transportType: 'walk', transportTime: 15 },
-                        { id: 5, category: 'shopping', time: '14:00', name: '皇家拱廊 (Royal Arcade)', notes: '漫步華麗維多利亞風格拱廊', transportType: 'walk', transportTime: 5 },
-                        { id: 6, category: 'attraction', time: '17:30', name: '尤利卡觀景台 (Melbourne Skydeck)', notes: '俯瞰墨爾本絕美璀璨夜景', transportType: 'walk', transportTime: 15 }
+                        { id: 3, category: 'food', time: '11:00', name: '德格雷夫斯街 (Degraves Street)', notes: '享用Cafe與Brunch (Degraves Espresso 或 Higher Ground)', transportType: 'train', transportTime: 30 },
+                        { id: 4, category: 'acc', time: '15:00', name: '公寓辦理 Check-In', notes: 'Docklands 公寓', transportType: 'train', transportTime: 20 },
+                        { id: 5, category: 'shopping', time: '15:30', name: '皇家拱廊 (Royal Arcade)', notes: '尋找 Koko Black 朱古力', transportType: 'train', transportTime: 15 },
+                        { id: 6, category: 'food', time: '18:30', name: '晚餐 & 甜品', notes: '晚餐: Pastuso 或 MoVida / 甜品: Homm Dessert 或 Pinto Tiramisu', transportType: 'walk', transportTime: 15 }
                     ],
                     'D3': [
-                        { id: 7, category: 'other', time: '09:30', name: '市區辦理租車手續並取車', notes: '準備自駕之旅', transportType: 'walk', transportTime: 10 },
-                        { id: 8, category: 'attraction', time: '10:00', name: '前往 Ballarat 疏芬山金礦', notes: '自駕向西北方行駛', transportType: 'car', transportTime: 90 },
-                        { id: 9, category: 'attraction', time: '11:30', name: '疏芬山金礦場 (Sovereign Hill)', notes: '巡邏表演、溪邊淘真金、參觀地底礦坑', transportType: 'walk', transportTime: 0 },
-                        { id: 10, category: 'acc', time: '16:00', name: '返回 Docklands 公寓', notes: '結束淘金體驗返程', transportType: 'car', transportTime: 90 }
+                        { id: 7, category: 'other', time: '09:00', name: '市區辦理租車手續並取車', notes: 'Europcar 取車', transportType: 'walk', transportTime: 15 },
+                        { id: 8, category: 'attraction', time: '10:00', name: '前往西北方的 Ballarat', notes: '自駕向西北方行駛', transportType: 'car', transportTime: 90 },
+                        { id: 9, category: 'attraction', time: '11:30', name: '疏芬山金礦場 (Sovereign Hill)', notes: '觀賞巡邏表演、體驗溪邊淘真金、參觀地底礦坑', transportType: 'walk', transportTime: 0 },
+                        { id: 10, category: 'acc', time: '16:00', name: '返回 Docklands 公寓', notes: '結束淘金體驗返程', transportType: 'car', transportTime: 90 },
+                        { id: 11, category: 'food', time: '18:00', name: '晚餐', notes: '餐廳: Surasang 或 Nana Thai 或 Dodee Paidang', transportType: 'walk', transportTime: 15 }
                     ],
                     'D4': [
-                        { id: 11, category: 'other', time: '08:00', name: '出發前往大洋路 (Great Ocean Road)', notes: '展開海岸線絕景自駕', transportType: 'car', transportTime: 0 },
-                        { id: 12, category: 'attraction', time: '09:30', name: '大洋路歷史木牌樓', notes: '合照紀念偉大築路工程', transportType: 'car', transportTime: 90 },
-                        { id: 13, category: 'attraction', time: '10:00', name: '洛恩小鎮 (Lorne)', notes: '俯瞰公路與海洋絕美弧線', transportType: 'car', transportTime: 30 },
-                        { id: 14, category: 'food', time: '12:30', name: '阿波羅灣 (Apollo Bay)', notes: '海濱小鎮享用海鮮午餐', transportType: 'car', transportTime: 60 },
-                        { id: 15, category: 'attraction', time: '14:00', name: '大奧特威國家公園', notes: '尋找野生 Koala (樹熊)', transportType: 'car', transportTime: 40 },
-                        { id: 16, category: 'attraction', time: '15:30', name: '十二門徒石 / 吉布森石階 / 洛克阿德峽灣', notes: '朝聖巨石與峽灣震撼奇景', transportType: 'car', transportTime: 60 },
-                        { id: 17, category: 'acc', time: '18:30', name: '返回 Docklands 宿處', notes: '夜間自駕回市區', transportType: 'car', transportTime: 180 }
+                        { id: 12, category: 'other', time: '08:00', name: '出發前往大洋路 (Great Ocean Road)', notes: '展開海岸線絕景自駕', transportType: 'car', transportTime: 0 },
+                        { id: 13, category: 'attraction', time: '09:30', name: '大洋路木牌樓', notes: '歷史木牌樓合照', transportType: 'car', transportTime: 90 },
+                        { id: 14, category: 'attraction', time: '10:00', name: '洛恩小鎮 (Lorne)', notes: '俯瞰蜿蜒公路與海洋交織的絕美弧線', transportType: 'car', transportTime: 30 },
+                        { id: 15, category: 'food', time: '12:30', name: '阿波羅灣 (Apollo Bay) 午餐', notes: '餐廳：D\'lish Fish', transportType: 'car', transportTime: 60 },
+                        { id: 16, category: 'attraction', time: '14:00', name: '大奧特威國家公園', notes: '尋找野生 Koala (樹熊) 的蹤跡', transportType: 'car', transportTime: 40 },
+                        { id: 17, category: 'attraction', time: '15:30', name: '十二門徒石 / 吉布森石階 / 洛克阿德峽灣', notes: '朝聖巨石與峽灣震撼奇景', transportType: 'car', transportTime: 60 },
+                        { id: 18, category: 'acc', time: '18:30', name: '回市區 Docklands 宿處', notes: '夜間自駕回市區', transportType: 'car', transportTime: 180 }
                     ],
                     'D5': [
-                        { id: 18, category: 'attraction', time: '10:00', name: '前往 Brighton 海灘', notes: '', transportType: 'train', transportTime: 30 },
-                        { id: 19, category: 'attraction', time: '11:00', name: '彩虹小屋 (Bathing Boxes)', notes: '與海邊獨特更衣小屋合照', transportType: 'walk', transportTime: 10 },
-                        { id: 20, category: 'attraction', time: '12:30', name: '前往維多利亞州立圖書館', notes: '搭乘免費電車回到市區', transportType: 'train', transportTime: 40 },
-                        { id: 21, category: 'attraction', time: '15:00', name: '圖書館穹頂閱覽室 & Hosier 塗鴉巷', notes: '朝聖八角穹頂與街頭塗鴉大片', transportType: 'walk', transportTime: 10 }
+                        { id: 19, category: 'attraction', time: '10:00', name: '前往 Brighton 海灘', notes: '搭乘大眾運輸或開車', transportType: 'car', transportTime: 30 },
+                        { id: 20, category: 'attraction', time: '11:00', name: '彩虹小屋 (Bathing Boxes)', notes: '與海邊獨特更衣小屋合照', transportType: 'walk', transportTime: 10 },
+                        { id: 21, category: 'food', time: '12:30', name: '前往查斯頓購物中心享用午餐', notes: '', transportType: 'car', transportTime: 30 },
+                        { id: 22, category: 'shopping', time: '14:00', name: '查斯頓購物中心血拼', notes: '南半球最大購物中心', transportType: 'walk', transportTime: 0 },
+                        { id: 23, category: 'food', time: '18:30', name: '晚餐 & 甜品', notes: '晚餐: Roule Galette 或 Reine & La Rue 或 Yakikami。甜品: Kori 或 Hareruya', transportType: 'car', transportTime: 30 }
                     ],
                     'D6': [
-                        { id: 22, category: 'other', time: '10:30', name: '前往 Lakeside 車站', notes: '準備搭乘蒸汽火車', transportType: 'car', transportTime: 60 },
-                        { id: 23, category: 'attraction', time: '12:35', name: '普芬比利火車 (Lakeside ➔ Gembrook)', notes: '復古百年蒸汽火車體驗', transportType: 'train', transportTime: 40 },
-                        { id: 24, category: 'attraction', time: '13:15', name: '漫步 Gembrook 小鎮', notes: '悠閒享用午餐與逛街', transportType: 'walk', transportTime: 0 },
-                        { id: 25, category: 'attraction', time: '15:05', name: '搭乘火車 (Gembrook ➔ Lakeside)', notes: '返回 Lakeside 車站取車', transportType: 'train', transportTime: 40 },
-                        { id: 26, category: 'other', time: '16:00', name: '前往菲利普島 (Phillip Island)', notes: '', transportType: 'car', transportTime: 90 },
-                        { id: 27, category: 'attraction', time: '18:00', name: '海濱棧道尋找野生海豹', notes: '漫步 The Nobbies 木棧道', transportType: 'walk', transportTime: 15 },
-                        { id: 28, category: 'attraction', time: '19:00', name: '神仙企鵝歸巢 (Underground Viewing)', notes: '地底觀察窗近距離看企鵝返巢', transportType: 'car', transportTime: 15 },
-                        { id: 29, category: 'acc', time: '21:30', name: '返回 Docklands 公寓', notes: '', transportType: 'car', transportTime: 120 }
+                        { id: 24, category: 'other', time: '10:30', name: '前往 Lakeside 車站', notes: '準備搭乘蒸汽火車', transportType: 'car', transportTime: 60 },
+                        { id: 25, category: 'attraction', time: '12:35', name: '搭乘火車 (Lakeside ➔ Gembrook)', notes: '復古百年蒸汽火車體驗', transportType: 'train', transportTime: 40 },
+                        { id: 26, category: 'food', time: '13:15', name: '漫步 Gembrook 小鎮享用輕食', notes: '悠閒小鎮時光', transportType: 'walk', transportTime: 0 },
+                        { id: 27, category: 'attraction', time: '15:05', name: '搭乘火車 (Gembrook ➔ Lakeside)', notes: '', transportType: 'train', transportTime: 40 },
+                        { id: 28, category: 'other', time: '16:00', name: 'Lakeside 前往菲利普島', notes: '', transportType: 'car', transportTime: 90 },
+                        { id: 29, category: 'attraction', time: '18:00', name: '海濱棧道尋找野生海豹', notes: '漫步木棧道', transportType: 'walk', transportTime: 15 },
+                        { id: 30, category: 'attraction', time: '19:00', name: '神仙企鵝歸巢 (Underground Viewing)', notes: '進入地下觀察室看企鵝返巢', transportType: 'walk', transportTime: 15 },
+                        { id: 31, category: 'acc', time: '21:30', name: '返回 Docklands 公寓', notes: '', transportType: 'car', transportTime: 120 }
                     ],
                     'D7': [
-                        { id: 30, category: 'attraction', time: '10:00', name: 'St Kilda 月亮公園 (Luna Park)', notes: '標誌性大嘴入口合照', transportType: 'train', transportTime: 30 },
-                        { id: 31, category: 'shopping', time: '12:00', name: 'DFO South Wharf Outlet', notes: '品牌大折扣狂歡血拼', transportType: 'train', transportTime: 20 },
-                        { id: 32, category: 'food', time: '20:30', name: '與朋友聚餐', notes: '', transportType: 'walk', transportTime: 15 }
+                        { id: 32, category: 'food', time: '08:30', name: '南墨爾本市場 & 午餐', notes: '餐廳：Aptus Seafood 或 Simply Spanish', transportType: 'car', transportTime: 15 },
+                        { id: 33, category: 'shopping', time: '11:30', name: 'DFO South Wharf Outlet', notes: '洗錢', transportType: 'car', transportTime: 10 },
+                        { id: 34, category: 'food', time: '19:00', name: '與朋友聚餐', notes: '餐廳：Max on Hardware', transportType: 'car', transportTime: 15 }
                     ],
                     'D8': [
-                        { id: 33, category: 'other', time: '10:00', name: '前往 Chadstone Shopping Centre', notes: '搭乘接駁車或大眾運輸', transportType: 'train', transportTime: 40 },
-                        { id: 34, category: 'shopping', time: '10:30', name: '查斯頓購物中心血拼', notes: '南半球最大精品與時尚購物天堂', transportType: 'walk', transportTime: 0 }
+                        { id: 35, category: 'food', time: '09:00', name: '維多利亞女王市場 & 午餐', notes: '餐廳：Bratwurst Shop & Co, Agathé Pastry, Hot Jam Donuts', transportType: 'car', transportTime: 15 },
+                        { id: 36, category: 'attraction', time: '12:00', name: '圖書館 & 塗鴉巷', notes: '觀看圖書館穹頂閱覽室、Hosier Lane型格街拍', transportType: 'walk', transportTime: 15 },
+                        { id: 37, category: 'shopping', time: '14:00', name: '墨爾本商場 & 墨爾本中央購物中心', notes: '洗錢同逛街', transportType: 'walk', transportTime: 10 },
+                        { id: 38, category: 'other', time: '16:30', name: '前往 Europcar 還車', notes: '還車', transportType: 'car', transportTime: 15 },
+                        { id: 39, category: 'food', time: '18:00', name: '晚餐', notes: '餐廳：Tipo 00或Asado或Palermo', transportType: 'walk', transportTime: 15 }
                     ],
                     'D9': [
-                        { id: 35, type: 'flight', category: 'flight', time: '11:05', name: 'QF029 返回香港', notes: '抵達時間 17:35 (MEL ➔ HKG)', transportType: 'bus', transportTime: 45 }
+                        { id: 40, category: 'other', time: '08:30', name: '搭乘 SkyBus ➔ 墨爾本機場 Check-In', notes: '準備返港', transportType: 'bus', transportTime: 45 },
+                        { id: 41, type: 'flight', category: 'flight', time: '11:05', name: 'QF029 返回香港', notes: '抵達時間 17:35 (MEL ➔ HKG)', transportType: 'walk', transportTime: 0 }
                     ]
                 });
 
@@ -436,7 +458,6 @@
                     { title: '塗鴉巷 (Hosier Lane)', img: 'https://www.visitvictoria.com/-/media/images/melbourne/destinations/laneways/hosier-lane/hosier-lane_mel_r_152543-56_1600x900.jpg?ts=20240429461126&c=product&cw=1600&ch=1200', desc: '墨爾本街頭藝術的靈魂所在，全巷塗鴉創作定期更換，每一道牆面都充滿強烈的視覺張力與當代潮流個性。' },
                     { title: '普芬比利蒸汽火車 (Puffing Billy)', img: 'https://bubugoaround.com/wp-content/uploads/puffing-billy-212.jpg', desc: '澳洲最古老且保存最完美的百年蒸汽火車，駛過綠意盎然的丹頓農山脈木橋，雙腳掛在車廂外的體驗是無數旅客的最愛。', mapEmbed: 'https://www.openstreetmap.org/export/embed.html?bbox=145.35%2C-37.92%2C145.55%2C-37.85&layer=mapnik' },
                     { title: '神仙企鵝歸巢 (Penguin Parade)', img: 'https://images.trvl-media.com/localexpert/190815/ab1770fb-3768-4ccf-83aa-126a51b94ff7.jpg?impolicy=resizecrop&rw=1005&rh=565', desc: '菲利普島的奇蹟！每當夕陽西下，成千上萬隻世界上體型最小的神仙小企鵝會成群結隊穿過沙灘搖搖晃晃返回巢穴。' },
-                    { title: '月亮公園 (Luna Park St Kilda)', img: 'https://images.trvl-media.com/place/6060975/6c5d37c3-65c3-459d-bb0e-fcd81a433e0c.jpg', desc: '開園於1912年，標誌性的「巨型笑臉入口」迎接著一代又一代遊客，園內擁有全球現存最古老、需人工煞車營運的木製過山車。', mapEmbed: 'https://www.openstreetmap.org/export/embed.html?bbox=144.9734%2C-37.8687%2C144.9774%2C-37.8647&layer=mapnik' },
                     { title: '查斯頓購物中心 (Chadstone Shopping Centre)', img: 'https://www.visitvictoria.com/-/media/atdw/melbourne/see-and-do/shopping-and-fashion/c41bc003d562c4ab4925cc6e09dd9c30_1600x1200.jpeg?ts=20220601330508', desc: '號稱「南半球最大的時尚首都」，匯聚了超過 550 家國際頂級奢華品牌、時尚小店與絕佳美食街。' }
                 ]);
 
@@ -464,12 +485,18 @@
                 const expenses = ref(JSON.parse(localStorage.getItem('melb_expenses')) || []);
                 const totalExpenses = computed(() => expenses.value.reduce((sum, e) => sum + parseFloat(e.amount), 0));
 
-                const checklist = ref(JSON.parse(localStorage.getItem('melb_checklist')) || [
+                // 修正 2: 載入時檢查並加入「國際車牌」到清單
+                let initialChecklist = JSON.parse(localStorage.getItem('melb_checklist')) || [
                     { name: '護照 Passport', done: false }, { name: '電子簽證 ETA', done: false },
+                    { name: '國際車牌 (駕照)', done: false },
                     { name: 'E-SIM / 漫遊', done: false }, { name: '澳幣現金', done: false },
                     { name: '行動電源 & 線', done: false }, { name: '八字轉接頭', done: false },
                     { name: '常備藥品', done: false }, { name: '保暖衣物', done: false }
-                ]);
+                ];
+                if (!initialChecklist.find(i => i.name.includes('國際車牌'))) {
+                    initialChecklist.splice(2, 0, { name: '國際車牌 (駕照)', done: false });
+                }
+                const checklist = ref(initialChecklist);
 
                 Vue.watch(checklist, (val) => localStorage.setItem('melb_checklist', JSON.stringify(val)), { deep: true });
                 Vue.watch(shoppingList, (val) => localStorage.setItem('melb_shopping', JSON.stringify(val)), { deep: true });
@@ -495,9 +522,9 @@
                         if (itineraryList.value) {
                             new Sortable(itineraryList.value, {
                                 animation: 150,
-                                handle: '.drag-handle', // <--- 限制只有抓取這個 class 才能拖曳
-                                delay: 100,             // <--- 加入微小的延遲，防止觸發過度敏感
-                                delayOnTouchOnly: true, // <--- 確保只在觸控裝置上啟用延遲
+                                handle: '.drag-handle',
+                                delay: 100,
+                                delayOnTouchOnly: true,
                                 onEnd: (evt) => {
                                     const list = itineraryData.value[currentDay.value];
                                     const item = list.splice(evt.oldIndex, 1)[0];
